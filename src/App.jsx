@@ -336,13 +336,105 @@ function AdSlot({ label = "Advertisement" }) {
   );
 }
 
-function DisclosureBlock() {
+function DisclosureBlock({ navigate }) {
   return (
     <div style={infoBlockStyle}>
       <h3 style={{ color: "#4df0ff", marginTop: 0 }}>Support This Tool</h3>
       <p style={{ color: "#d7ecff", lineHeight: 1.7 }}>
         This fan-made Palworld tool may eventually use ads, sponsorships, or affiliate links to help keep the site online. Recommendations and generator results are not paid placements.
       </p>
+      <button onClick={() => navigate("privacy")} style={textLinkButtonStyle}>
+        Read the Privacy Policy
+      </button>
+    </div>
+  );
+}
+
+function PrivacyPolicyPage({ goHome }) {
+  const lastUpdated = "May 30, 2026";
+
+  return (
+    <section style={policyPageStyle}>
+      <button onClick={goHome} style={backButtonStyle}>
+        ← Back Home
+      </button>
+
+      <h2 style={sectionTitleStyle}>Privacy Policy</h2>
+      <p style={policyMutedStyle}>Last updated: {lastUpdated}</p>
+
+      <p style={policyTextStyle}>
+        This Privacy Policy explains how Palworld Team Generator Hub (the “Site”) handles information when you visit and use the fan-made team generator.
+      </p>
+
+      <PolicySection title="Information we collect">
+        <p style={policyTextStyle}>
+          The Site does not currently require accounts, request your name or email address, store generated teams, or directly collect personal information through forms.
+        </p>
+        <p style={policyTextStyle}>
+          The Site is hosted on Netlify. Like other hosting providers, Netlify may process technical information needed to deliver and secure the Site, such as request and device/network information, according to Netlify’s own privacy practices.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Team generation and sharing">
+        <p style={policyTextStyle}>
+          Team generation happens in your browser. When you use the Share This Team button, your browser or device sharing feature may be used, or the generated team text may be copied to your clipboard. The Site does not receive the content you share or the destination where you send it.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Advertising and affiliate links">
+        <p style={policyTextStyle}>
+          The visible advertisement areas on the Site are currently placeholders only. The Site does not currently serve third-party ads or use affiliate links.
+        </p>
+        <p style={policyTextStyle}>
+          If advertising or affiliate links are enabled in the future, this policy will be updated before activation to identify the services used and describe applicable data practices, cookies, opt-out choices, and disclosures.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Cookies and analytics">
+        <p style={policyTextStyle}>
+          The Site does not currently add its own analytics or advertising cookies. Hosting infrastructure or external image hosting may still receive ordinary web requests needed to load the Site and Pal images.
+        </p>
+        <p style={policyTextStyle}>
+          If analytics, personalized ads, or other cookie-based tools are enabled later, this policy and any required consent controls will be updated before those tools are used.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="External images and third-party services">
+        <p style={policyTextStyle}>
+          Pal images are loaded from an external public image source. When your browser loads an external image, the image host may receive standard request information needed to deliver that image. The Site is not responsible for the privacy practices of external services.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Children’s privacy">
+        <p style={policyTextStyle}>
+          The Site is a general-audience fan tool and is not intended to collect personal information from children. The Site does not knowingly request or collect personal information from children.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Changes to this policy">
+        <p style={policyTextStyle}>
+          This Privacy Policy may be updated as features change, particularly if advertising, affiliate links, analytics, accounts, or contact forms are added. The updated date will be shown at the top of this page.
+        </p>
+      </PolicySection>
+
+      <PolicySection title="Contact">
+        <p style={policyTextStyle}>
+          A dedicated privacy contact email will be added before third-party advertising, analytics, or other data-collecting features are activated on the Site.
+        </p>
+      </PolicySection>
+
+      <p style={policyMutedStyle}>
+        This Site is fan-made and is not affiliated with Pocketpair. Palworld names and imagery belong to their respective owners.
+      </p>
+    </section>
+  );
+}
+
+function PolicySection({ title, children }) {
+  return (
+    <div style={policySectionStyle}>
+      <h3 style={{ color: "#4df0ff", marginTop: 0 }}>{title}</h3>
+      {children}
     </div>
   );
 }
@@ -415,7 +507,7 @@ function TeamGrid({ team }) {
   );
 }
 
-function Layout({ children }) {
+function Layout({ children, navigate }) {
   useEffect(() => {
     document.title = "Palworld Team Generator Hub | Random Teams & Challenge Builds";
 
@@ -449,7 +541,9 @@ function Layout({ children }) {
           Fan-made Palworld tool. Not affiliated with Pocketpair. Pal names and imagery belong to their respective owners.
         </p>
         <p style={{ margin: "8px 0 0" }}>
-          Privacy note: this prototype does not collect personal information. Ad or analytics tools may require a fuller privacy policy before launch.
+          <button onClick={() => navigate("privacy")} style={footerLinkButtonStyle}>
+            Privacy Policy
+          </button>
         </p>
       </footer>
     </div>
@@ -507,7 +601,7 @@ function HomePage({ navigate }) {
 
       <AdSlot label="Homepage Ad Slot" />
 
-      <DisclosureBlock />
+      <DisclosureBlock navigate={navigate} />
 
       <SEOBlock
         title="FAQ"
@@ -694,19 +788,76 @@ const backButtonStyle = {
   marginBottom: 20,
 };
 
+const textLinkButtonStyle = {
+  background: "transparent",
+  border: "none",
+  color: "#9fe7ff",
+  padding: 0,
+  textDecoration: "underline",
+  cursor: "pointer",
+  fontSize: 14,
+};
+
+const footerLinkButtonStyle = {
+  ...textLinkButtonStyle,
+  color: "#cfe9ff",
+};
+
+const policyPageStyle = {
+  maxWidth: 920,
+  margin: "0 auto",
+};
+
+const policySectionStyle = {
+  background: "rgba(255,255,255,0.04)",
+  border: "1px solid rgba(77,240,255,0.18)",
+  borderRadius: 14,
+  padding: 18,
+  marginTop: 18,
+};
+
+const policyTextStyle = {
+  color: "#d7ecff",
+  lineHeight: 1.75,
+};
+
+const policyMutedStyle = {
+  color: "#9fb7d3",
+  lineHeight: 1.6,
+};
+
 // =====================================================
 // APP
 // =====================================================
 
 export default function App() {
-  const [page, setPage] = useState("home");
+  const readPageFromHash = () => window.location.hash.replace("#", "") || "home";
+  const [page, setPage] = useState(readPageFromHash);
+
+  useEffect(() => {
+    const onHashChange = () => setPage(readPageFromHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  function navigate(nextPage) {
+    if (nextPage === "home") {
+      window.location.hash = "";
+      setPage("home");
+    } else {
+      window.location.hash = nextPage;
+      setPage(nextPage);
+    }
+  }
 
   return (
-    <Layout>
+    <Layout navigate={navigate}>
       {page === "home" ? (
-        <HomePage navigate={setPage} />
+        <HomePage navigate={navigate} />
+      ) : page === "privacy" ? (
+        <PrivacyPolicyPage goHome={() => navigate("home")} />
       ) : (
-        <GeneratorPage mode={page} goHome={() => setPage("home")} />
+        <GeneratorPage mode={page} goHome={() => navigate("home")} />
       )}
     </Layout>
   );
